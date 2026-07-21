@@ -26,3 +26,49 @@ class orderBook:
             self.asks[order.price].remove(order)
             if not self.asks[order.price]:
                 del self.asks[order.price]
+
+    def bestBid(self):
+        """Return the price of the highest bid within the order book."""
+        #ensure a bid exists in the order book
+        if not self.bids:
+            return None
+        return max(self.bids)
+    
+    def bestAsk(self):
+        """Return the price of the lowest ask within the order book."""
+        if not self.asks:
+            return None
+        return min(self.asks)
+
+    def midPrice(self):
+        """Return mean of the highest bid and lowest ask."""
+        b = self.bestBid()
+        a = self.bestAsk()
+        if not a or not b:
+            return None
+        return (b + a)/2
+    
+    def spread(self):
+        """Return difference between the price of the highest bid and lowest ask."""
+        b = self.bestBid()
+        a = self.bestAsk()
+        if not a or not b:
+            return None
+        return (a - b)
+    
+    def bookDepth(self):
+        """Print out the entirety of the book for debugging purposes."""
+        #bids first
+        for key in self.bids:
+            sum = 0
+            for i in range(len(self.bids[key])):
+                sum += self.bids[key][i].quantity
+            #ordered by price 
+            print("Bid price " + str(key) + ": " + str(sum))
+            
+        #asks
+        for key in self.asks:
+            sum = 0
+            for i in range(len(self.asks[key]) ):
+                sum+=self.asks[key][i].quantity
+            print("Ask price " + str(key) + ": " + str(sum))
